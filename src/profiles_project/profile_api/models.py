@@ -8,13 +8,14 @@ from django.contrib.auth.models import BaseUserManager
 class UserProfileManager(BaseUserManager):
     """Helps Django handling user Profile"""
 
-    def create_user(self,name,email,password=None):
+    def create_user(self, email, name, password=None):
         """ Creates a user object """
 
         if not email:
             raise ValueError('Must have a Valid Email address')
 
-        email = self.email_normalize(email)
+        email = self.normalize_email(email)
+        name =  name
         user = self.model(email = email,name = name)
 
         user.set_password(password)
@@ -22,8 +23,8 @@ class UserProfileManager(BaseUserManager):
 
         return user
 
-    def create_super_user(self,name,email,password):
-        user = self.create_user(name,email,password)
+    def create_superuser(self, email, name , password):
+        user = self.create_user(email,name,password)
         user.is_superuser = True
         user.is_staff = True
         user.save(using = self._db)
@@ -35,15 +36,15 @@ class UserProfileManager(BaseUserManager):
 class UserProfile(AbstractBaseUser,PermissionsMixin):
     """ Base User Profile model class"""
 
-    name = models.CharField(max_length = 255)
     email = models.EmailField(max_length = 255,unique = True)
+    name = models.CharField(max_length = 255)
     is_active = models.BooleanField(default = True)
     is_staff = models.BooleanField(default = False)
 
     object = UserProfileManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELD = ['name']
+    REQUIRED_FIELDS = ['name']
 
     def get_full_name(self):
 
@@ -51,7 +52,7 @@ class UserProfile(AbstractBaseUser,PermissionsMixin):
 
     def get_short_name():
 
-        return seld.name
+        return self.name
 
     def __str__(self):
 
