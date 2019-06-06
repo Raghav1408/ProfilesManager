@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
+
 # Create your models here.
 
 class UserProfileManager(BaseUserManager):
@@ -31,8 +32,6 @@ class UserProfileManager(BaseUserManager):
 
         return user
 
-
-
 class UserProfile(AbstractBaseUser,PermissionsMixin):
     """ Base User Profile model class"""
 
@@ -41,7 +40,7 @@ class UserProfile(AbstractBaseUser,PermissionsMixin):
     is_active = models.BooleanField(default = True)
     is_staff = models.BooleanField(default = False)
 
-    object = UserProfileManager()
+    objects = UserProfileManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name']
