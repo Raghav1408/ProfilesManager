@@ -3,9 +3,9 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from . import serializers,models
+from . import serializers,models,permissions
 from rest_framework import status
-
+from rest_framework.authentication import TokenAuthentication
 from rest_framework import viewsets
 # Create your views here.
 
@@ -52,5 +52,7 @@ class HelloViewSet(viewsets.ViewSet):
         return Response({'message':'Hello',"List":a})
 
 class UserProfileViewSet(viewsets.ModelViewSet):
-    queryset = models.UserProfile.objects.all()
     serializer_class = serializers.UserProfileSerializer
+    queryset = models.UserProfile.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.UpdateUserProfile,)

@@ -13,6 +13,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         'password':{'write_only':True}
         }
     def create(self, validated_data):
+        print("create object")
         user = models.UserProfile()
         user.email = validated_data.get('email')
         user.name = validated_data.get('name')
