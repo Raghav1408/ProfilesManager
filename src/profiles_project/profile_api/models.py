@@ -64,4 +64,4 @@ class ProfileFeedItem(models.Model):
     created_on = models.DateTimeField(auto_now_add = True)
 
     def __str__(self):
-        return item_name
+        return self.item_name

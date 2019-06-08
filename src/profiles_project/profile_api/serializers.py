@@ -20,3 +20,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
         user.set_password(validated_data.get('password'))
         user.save()
         return user
+
+class ProfileFeedItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ProfileFeedItem
+        fields = '__all__'
+        read_only_fields = ('user_profile',)
