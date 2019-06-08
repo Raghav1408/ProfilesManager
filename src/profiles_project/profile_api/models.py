@@ -56,3 +56,6 @@ class UserProfile(AbstractBaseUser,PermissionsMixin):
     def __str__(self):
 
         return self.email
+
+class ProfileFeedItem(models.Model):
+    """ Model class for Feed Items """

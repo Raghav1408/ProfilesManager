@@ -8,6 +8,10 @@ from . import serializers,models,permissions
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import viewsets
+
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.serializers import AuthTokenSerializer
 # Create your views here.
 
 class HelloApiView(APIView):
@@ -58,4 +62,20 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.UpdateUserProfile,)
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('name','email',) 
+    search_fields = ('name','email',)
+
+class LoginViewSet(viewsets.ViewSet):
+    """ returns a authentication token response """
+    serializer_class = AuthTokenSerializer
+    def create(self,request):
+        print("inside")
+        serializer = self.serializer_class(data=request.data,context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        print("Valid")
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'user_id': user.pk,
+            'email': user.email
+        })

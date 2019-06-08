@@ -6,5 +6,5 @@ class UpdateUserProfile(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             print("SAFE")
             return True
-        print(" NOT SAFE\n serializer_class = serializers.UserProfileSerializer ")
+        print(" NOT SAFE\n", request.user.id, obj.id)
         return request.user.id == obj.id
