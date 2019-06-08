@@ -59,3 +59,9 @@ class UserProfile(AbstractBaseUser,PermissionsMixin):
 
 class ProfileFeedItem(models.Model):
     """ Model class for Feed Items """
+    user_profile = models.ForeignKey('UserProfile' ,on_delete = models.CASCADE)
+    item_name = models.CharField(max_length = 255)
+    created_on = models.DateTimeField(auto_now_add = True)
+
+    def __str__(self):
+        return item_name
